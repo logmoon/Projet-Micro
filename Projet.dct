@@ -308,6 +308,7 @@ d_not_a
 d_not_a_bit
 data_address
 data_address_bit
+date
 dc
 dc_bit
 dec2bcd
@@ -434,6 +435,7 @@ go_done_bit
 go_not_done
 go_not_done_bit
 halfbits
+hours
 i2c_data
 i2c_data_bit
 i2c_read
@@ -505,6 +507,12 @@ lcd_rs
 lcd_rs_direction
 ldexp
 ldiv
+led_b
+led_b_direction
+led_j
+led_j_direction
+led_r
+led_r_direction
 log
 log10
 longint2double
@@ -534,6 +542,7 @@ memcpy
 memmove
 memset
 min
+minutes
 mm_error_
 mm_freememtable
 mm_init
@@ -542,6 +551,8 @@ mm_nrfreeblocksused
 mm_possiblyfragmented
 mm_totalfreememsize
 modf
+motor
+motor_direction
 mul_16x16_s
 mul_16x16_u
 mul_32x32_fp
@@ -841,6 +852,7 @@ s1d13700_write_text
 s1d13700_write_text_adv
 s1d13700_write_text_return_pos
 sdiv3232l
+seconds
 sen
 sen_bit
 setfdz32
@@ -1150,6 +1162,7 @@ t6963c_writecommand
 t6963c_writedata
 tan
 tanh
+time
 time_datetoepoch
 time_epochtodate
 time_jd1970
@@ -1292,6 +1305,7 @@ uart1_tx_idle
 uart1_write
 uart1_write_text
 uldiv
+updatetime
 vdelay_advanced_ms
 vdelay_ms
 w

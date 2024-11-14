@@ -6,7 +6,7 @@ Value=0
 [BUILD_TYPE]
 Value=0
 [ACTIVE_TAB]
-Value=Projet.c
+Value=Projet\Projet.c
 [USE_EEPROM]
 Value=0
 [USE_HEAP]
@@ -33,11 +33,12 @@ Count=0
 [OTHER_FILES]
 Count=0
 [SEARCH_PATH]
-Count=4
+Count=5
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Defs\
 Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\
-Path2=C:\000\Esprit\3B\Microcontrollers - S01\
-Path3=C:\000\Esprit\3B\Microcontrollers - S01\Projet\
+Path2=C:\000\Esprit\3B\Microcontrollers - S01\Projet\
+Path3=C:\000\Esprit\3B\Microcontrollers - S01\
+Path4=C:\000\Esprit\3B\Microcontrollers - S01\Projet\Projet\
 [HEADER_PATH]
 Count=0
 [HEADERS]
