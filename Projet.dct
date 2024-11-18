@@ -508,11 +508,8 @@ lcd_rs_direction
 ldexp
 ldiv
 led_b
-led_b_direction
 led_j
-led_j_direction
 led_r
-led_r_direction
 log
 log10
 longint2double
@@ -552,7 +549,6 @@ mm_possiblyfragmented
 mm_totalfreememsize
 modf
 motor
-motor_direction
 mul_16x16_s
 mul_16x16_u
 mul_32x32_fp

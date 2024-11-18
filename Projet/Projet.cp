@@ -6,7 +6,6 @@ sbit LCD_D4 at RD4_bit;
 sbit LCD_D5 at RD5_bit;
 sbit LCD_D6 at RD6_bit;
 sbit LCD_D7 at RD7_bit;
-
 sbit LCD_RS_Direction at TRISC0_bit;
 sbit LCD_EN_Direction at TRISC2_bit;
 sbit LCD_D4_Direction at TRISD4_bit;
@@ -14,19 +13,10 @@ sbit LCD_D5_Direction at TRISD5_bit;
 sbit LCD_D6_Direction at TRISD6_bit;
 sbit LCD_D7_Direction at TRISD7_bit;
 
-
 sbit LED_R at RC3_bit;
-sbit LED_R_Direction at TRISC3_bit;
-
 sbit LED_B at RC4_bit;
-sbit LED_B_Direction at TRISC4_bit;
-
 sbit LED_J at RC5_bit;
-sbit LED_J_Direction at TRISC5_bit;
-
-
 sbit MOTOR at RC6_bit;
-sbit MOTOR_Direction at TRISC6_bit;
 
 
 char time[] = "00:00:00";
@@ -65,18 +55,18 @@ void updateTime() {
 
 void main() {
 
- LED_R_Direction = 0;
- LED_B_Direction = 0;
- LED_J_Direction = 0;
- MOTOR_Direction = 0;
-
-
  LCD_RS_Direction = 0;
  LCD_EN_Direction = 0;
  LCD_D4_Direction = 0;
  LCD_D5_Direction = 0;
  LCD_D6_Direction = 0;
  LCD_D7_Direction = 0;
+
+ TRISC3_bit = 0;
+ TRISC4_bit = 0;
+ TRISC5_bit = 0;
+ TRISC6_bit = 0;
+
 
 
  Lcd_Init();
@@ -89,13 +79,12 @@ void main() {
  LED_J = 0;
  MOTOR = 0;
 
- while(1) {
+ while(1)
+ {
  updateTime();
-
  Lcd_Out(1, 1, "Salle de Sport");
  Lcd_Out(2, 1, time);
  Lcd_Out(2, 10, date);
-
- Delay_ms(100);
+ Delay_ms(1000);
  }
 }
