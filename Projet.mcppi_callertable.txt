@@ -8,8 +8,34 @@ main
 		Delay_1us
 		Delay_5500us
 		Delay_50us
+	ADC_Init
 	updateTime
 		Div_16X16_U
+	readTemperature
+		ADC_Read
+			Delay_22us
+		word2double
+			NRM3232
+				RES032
+				SETFUN32
+				FIXSIGN32
+		Mul_32x32_FP
+			RES032
+			SETFOV32
+			SETFUN32
+		Div_32x32_FP
+			SETFDZ32
+			RES032
+			SETFOV32
+			SETFUN32
+	FloatToStr
+		strcpy
+		Compare_Double
+		Mul_32x32_FP
+			RES032
+			SETFOV32
+			SETFUN32
+		Div_8X8_U
 	Lcd_Out
 		Lcd_Cmd
 			Delay_1us
@@ -20,3 +46,4 @@ main
 				Delay_1us
 				Delay_5500us
 				Delay_50us
+	Compare_Double

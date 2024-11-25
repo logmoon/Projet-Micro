@@ -170,6 +170,7 @@ adc_get_sample
 adc_get_sample_ptr
 adc_init
 adc_read
+adc_value
 adcon0
 adcon1
 adcs0
@@ -508,8 +509,11 @@ lcd_rs_direction
 ldexp
 ldiv
 led_b
+led_b_direction
 led_j
+led_j_direction
 led_r
+led_r_direction
 log
 log10
 longint2double
@@ -549,6 +553,7 @@ mm_possiblyfragmented
 mm_totalfreememsize
 modf
 motor
+motor_direction
 mul_16x16_s
 mul_16x16_u
 mul_32x32_fp
@@ -760,6 +765,7 @@ re2
 re2_bit
 read_write
 read_write_bit
+readtemperature
 res032
 rp0
 rp0_bit
@@ -1158,6 +1164,8 @@ t6963c_writecommand
 t6963c_writedata
 tan
 tanh
+temp_str
+temperature
 time
 time_datetoepoch
 time_epochtodate
