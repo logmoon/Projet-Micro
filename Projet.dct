@@ -170,7 +170,6 @@ adc_get_sample
 adc_get_sample_ptr
 adc_init
 adc_read
-adc_value
 adcon0
 adcon1
 adcs0
@@ -212,6 +211,7 @@ bclif
 bclif_bit
 bf
 bf_bit
+biometric_sensor
 boot16_delay_5ms
 brgh
 brgh_bit
@@ -309,7 +309,6 @@ d_not_a
 d_not_a_bit
 data_address
 data_address_bit
-date
 dc
 dc_bit
 dec2bcd
@@ -436,7 +435,8 @@ go_done_bit
 go_not_done
 go_not_done_bit
 halfbits
-hours
+heart_rate
+i
 i2c_data
 i2c_data_bit
 i2c_read
@@ -467,6 +467,7 @@ inte
 inte_bit
 intedg
 intedg_bit
+interrupt
 intf
 intf_bit
 inttohex
@@ -508,6 +509,8 @@ lcd_rs
 lcd_rs_direction
 ldexp
 ldiv
+led_ac
+led_ac_direction
 led_b
 led_b_direction
 led_j
@@ -543,7 +546,6 @@ memcpy
 memmove
 memset
 min
-minutes
 mm_error_
 mm_freememtable
 mm_init
@@ -561,6 +563,7 @@ mul_32x32_s
 mul_32x32_u
 mul_8x8_s
 mul_8x8_u
+nb_adherent
 not_a
 not_a_bit
 not_address
@@ -765,7 +768,6 @@ re2
 re2_bit
 read_write
 read_write_bit
-readtemperature
 res032
 rp0
 rp0_bit
@@ -854,7 +856,6 @@ s1d13700_write_text
 s1d13700_write_text_adv
 s1d13700_write_text_return_pos
 sdiv3232l
-seconds
 sen
 sen_bit
 setfdz32
@@ -1164,9 +1165,6 @@ t6963c_writecommand
 t6963c_writedata
 tan
 tanh
-temp_str
-temperature
-time
 time_datetoepoch
 time_epochtodate
 time_jd1970
@@ -1210,6 +1208,10 @@ tp_init
 tp_press_detect
 tp_set_adc_threshold
 tp_set_calibration_consts
+treadmill_distance
+treadmill1_motion
+treadmill2_motion
+treadmill3_motion
 trisa
 trisa0
 trisa0_bit
@@ -1309,7 +1311,6 @@ uart1_tx_idle
 uart1_write
 uart1_write_text
 uldiv
-updatetime
 vdelay_advanced_ms
 vdelay_ms
 w

@@ -20,11 +20,25 @@ sbit LED_B at RC4_bit;
 sbit LED_B_Direction at TRISC4_bit;
 sbit LED_J at RC5_bit;
 sbit LED_J_Direction at TRISC5_bit;
+sbit LED_AC at RC7_bit;
+sbit LED_AC_Direction at TRISC7_bit;
+
+sbit BIOMETRIC_SENSOR at RB0_bit;
+sbit TREADMILL1_MOTION at RB4_bit;
+sbit TREADMILL2_MOTION at RB5_bit;
+sbit TREADMILL3_MOTION at RB6_bit;
 
 // Configuration Moteur (ventilateur) sur RC6
 sbit MOTOR at RC6_bit;
 sbit MOTOR_Direction at TRISC6_bit;
 
+unsigned int NB_Adherent = 0;
+float heart_rate = 0;
+float treadmill_distance = 0;
+int i = 0;
+
+
+/*
 // Variables pour l'horloge
 char time[] = "00:00:00";
 char date[] = "18/11/24";
@@ -38,15 +52,19 @@ unsigned int hours = 15;
 unsigned int adc_value;
 float temperature;
 char temp_str[16];
+*/
 
 // Fonction pour lire la température à partir du capteur LM35
+/*
 float readTemperature() {
     adc_value = ADC_Read(0); // Lecture depuis le canal AN0
     // Conversion en température (10mV par degré Celsius, 5V = 1023)
     return (adc_value * 5.0 / 1023.0) * 100.0; // Conversion en °C
 }
+*/
 
 // Fonction pour mettre à jour l'heure
+/*
 void updateTime() {
     seconds++;
     if (seconds >= 60) {
@@ -68,12 +86,72 @@ void updateTime() {
     time[6] = (seconds / 10) + '0';
     time[7] = (seconds % 10) + '0';
 }
+*/
+
+void interrupt() {
+    if (INTF_bit) {
+        NB_Adherent++;
+        LED_AC = 1;
+        Lcd_Out(1, 1, "Bienvenue!");
+        Delay_ms(3000);
+        LED_AC = 0;
+        Lcd_Cmd(_LCD_CLEAR);
+        INTF_bit = 0;
+    }
+
+    if (RBIF_bit)
+    {
+        // Surveillance du tapis de course 2 (freq cardiaque)
+        if (TREADMILL2_MOTION) {
+            LED_B = 1;
+            heart_rate = ADC_Read(1) * 0.5; // Potentiometre
+            if (heart_rate > 150) {
+               for (i = 0; i < 3; ++i)
+               {
+                   Delay_ms(400);
+                   LED_R = 1;
+                   Delay_ms(400);
+                   LED_R = 0;
+               }
+            }
+        }
+        else {
+            Lcd_Cmd(_LCD_CLEAR);
+            LED_B = 0;
+            LED_R = 0;
+        }
+
+        // Surveillance du tapis de course 3 (distance)
+        if (TREADMILL3_MOTION) {
+            LED_J = 1;
+            treadmill_distance = ADC_Read(2) * 0.1; // Capteur Ultrasonic
+            if (treadmill_distance >= 5.0) {
+                Lcd_Cmd(_LCD_CLEAR);
+                Lcd_Out(1, 1, "BRAVO!");
+                for (i = 0; i < 3; ++i)
+                {
+                    Delay_ms(400);
+                    LED_AC = 1;
+                    Delay_ms(400);
+                    LED_AC = 0;
+                }
+            }
+        } else {
+            Lcd_Cmd(_LCD_CLEAR);
+            LED_J = 0;
+            LED_AC = 0;
+        }
+        
+        RBIF_bit = 0;
+    }
+}
 
 void main() {
     // Configuration des directions des broches
     LED_R_Direction = 0;
     LED_B_Direction = 0;
     LED_J_Direction = 0;
+    LED_AC_Direction = 0;
     MOTOR_Direction = 0;
     LCD_RS_Direction = 0;
     LCD_EN_Direction = 0;
@@ -84,8 +162,8 @@ void main() {
 
     // Initialisation du LCD
     Lcd_Init();
-    Lcd_Cmd(_LCD_CLEAR);
-    Lcd_Cmd(_LCD_CURSOR_OFF);
+    // Lcd_Cmd(_LCD_CLEAR);
+    // Lcd_Cmd(_LCD_CURSOR_OFF);
 
     // Initialisation ADC
     ADC_Init();
@@ -94,9 +172,15 @@ void main() {
     LED_R = 0;
     LED_B = 0;
     LED_J = 0;
+    LED_AC = 0;
     MOTOR = 0;
+    
+    // Initialization des interruptions
+    INTCON = 0b11011000; // GIE, PEIE, INTE, RBIE enabled
+    OPTION_REG.INTEDG = 1; // Interruption sur front montant (RB0)
 
     while (1) {
+    /*
         // Mise à jour de l'heure
         updateTime();
 
@@ -104,9 +188,9 @@ void main() {
         temperature = readTemperature();
 
         // Affichage de l'heure, de la date et de la température
-       /* Lcd_Out(1, 1, "Salle de Sport");
-        Lcd_Out(2, 1, time);
-        Lcd_Out(2, 10, date);  */
+        // Lcd_Out(1, 1, "Salle de Sport");
+        // Lcd_Out(2, 1, time);
+        // Lcd_Out(2, 10, date);
 
         // Formater la température en chaîne de caractères pour l'afficher
         FloatToStr(temperature, temp_str);
@@ -124,5 +208,6 @@ void main() {
         }
 
         Delay_ms(1000); // Mise à jour toutes les secondes
+        */
     }
 }
