@@ -36,6 +36,7 @@ unsigned int NB_Adherent = 0;
 float heart_rate = 0;
 float treadmill_distance = 0;
 int i = 0;
+int NB = 0;
 
 
 /*
@@ -88,19 +89,61 @@ void updateTime() {
 }
 */
 
+void repos() {
+    // Initialisation des sorties
+    LED_R = 0;
+    LED_B = 0;
+    LED_J = 0;
+    LED_AC = 0;
+    MOTOR = 0;
+
+    // Initialization des interruptions
+    INTCON = 0b11011000; // GIE, PEIE, INTE, RBIE enabled
+    OPTION_REG = 0b01000000; // Interruption sur front montant (RB0)
+    
+    // Initializer TMR0 stuff (just in case)
+    NB = 152;
+    TMR0 = 0;
+}
+
 void interrupt() {
+    // RB0
     if (INTF_bit) {
+        INTF_bit = 0;
         NB_Adherent++;
         LED_AC = 1;
         Lcd_Out(1, 1, "Bienvenue!");
         Delay_ms(3000);
         LED_AC = 0;
         Lcd_Cmd(_LCD_CLEAR);
-        INTF_bit = 0;
+    }
+    
+    // TMR0
+    if(INTCON.T0IF == 1)
+    {
+         INTCON.T0IF = 0;
+         NB--;
+         if (NB==0) {
+             repos();
+         }
     }
 
     if (RBIF_bit)
     {
+       RBIF_bit = 0;
+       
+       if (TREADMILL1_MOTION) {
+          // Allumer LED
+          LED_R = 1;
+          
+          // Activer et intializer interruption sur TMR0 mode timer.
+          INTCON.T0IE = 1; // Activer interruption sur TMR0
+          OPTION_REG.PSA = 0; // On va utiliser un prediviseur
+          // Prediviseur = 256 (PS0=1, PS1=1, PS2=1)
+          OPTION_REG.PS0 = 1;
+          OPTION_REG.PS1 = 1;
+          OPTION_REG.PS2 = 1;
+       }
         // Surveillance du tapis de course 2 (freq cardiaque)
         if (TREADMILL2_MOTION) {
             LED_B = 1;
@@ -118,7 +161,6 @@ void interrupt() {
         else {
             Lcd_Cmd(_LCD_CLEAR);
             LED_B = 0;
-            LED_R = 0;
         }
 
         // Surveillance du tapis de course 3 (distance)
@@ -136,13 +178,12 @@ void interrupt() {
                     LED_AC = 0;
                 }
             }
-        } else {
+        }
+        else {
             Lcd_Cmd(_LCD_CLEAR);
             LED_J = 0;
             LED_AC = 0;
         }
-        
-        RBIF_bit = 0;
     }
 }
 
@@ -159,7 +200,7 @@ void main() {
     LCD_D5_Direction = 0;
     LCD_D6_Direction = 0;
     LCD_D7_Direction = 0;
-
+    
     // Initialisation du LCD
     Lcd_Init();
     // Lcd_Cmd(_LCD_CLEAR);
@@ -168,16 +209,7 @@ void main() {
     // Initialisation ADC
     ADC_Init();
 
-    // Initialisation des sorties
-    LED_R = 0;
-    LED_B = 0;
-    LED_J = 0;
-    LED_AC = 0;
-    MOTOR = 0;
-    
-    // Initialization des interruptions
-    INTCON = 0b11011000; // GIE, PEIE, INTE, RBIE enabled
-    OPTION_REG.INTEDG = 1; // Interruption sur front montant (RB0)
+    repos();
 
     while (1) {
     /*

@@ -5,6 +5,7 @@ main
 		Delay_5500us
 		Delay_1us
 	ADC_Init
+	repos
 interrupt
 	Lcd_Out
 		Lcd_Cmd
@@ -20,6 +21,7 @@ interrupt
 		Delay_1us
 		Delay_5500us
 		Delay_50us
+	repos
 	ADC_Read
 		Delay_22us
 	word2double
