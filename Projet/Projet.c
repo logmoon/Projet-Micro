@@ -112,6 +112,7 @@ void interrupt() {
     if (INTF_bit) {
         INTF_bit = 0;
         EEPROM_Write(0x00, NB_Adherent + 1);
+        Delay_ms(20); // Min 20 ms between write and read: https://download.mikroe.com/documents/compilers/mikroc/pic/help/eeprom_library.html
         NB_Adherent = EEPROM_Read(0x00);
         IntToStr(NB_Adherent, nb_adherent_text);
         LED_AC = 1;
