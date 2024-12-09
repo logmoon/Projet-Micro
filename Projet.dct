@@ -565,6 +565,7 @@ mul_8x8_s
 mul_8x8_u
 nb
 nb_adherent
+nb_adherent_text
 not_a
 not_a_bit
 not_address

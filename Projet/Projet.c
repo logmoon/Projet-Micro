@@ -32,7 +32,8 @@ sbit TREADMILL3_MOTION at RB6_bit;
 sbit MOTOR at RC6_bit;
 sbit MOTOR_Direction at TRISC6_bit;
 
-unsigned int NB_Adherent = 0;
+unsigned short NB_Adherent = 0;
+char nb_adherent_text[10];
 float heart_rate = 0;
 float treadmill_distance = 0;
 int i = 0;
@@ -110,9 +111,12 @@ void interrupt() {
     // RB0
     if (INTF_bit) {
         INTF_bit = 0;
-        NB_Adherent++;
+        EEPROM_Write(0x00, NB_Adherent + 1);
+        NB_Adherent = EEPROM_Read(0x00);
+        IntToStr(NB_Adherent, nb_adherent_text);
         LED_AC = 1;
         Lcd_Out(1, 1, "Bienvenue!");
+        Lcd_Out(2, 1, nb_adherent_text);
         Delay_ms(3000);
         LED_AC = 0;
         Lcd_Cmd(_LCD_CLEAR);
@@ -138,11 +142,13 @@ void interrupt() {
           
           // Activer et intializer interruption sur TMR0 mode timer.
           INTCON.T0IE = 1; // Activer interruption sur TMR0
+          OPTION_REG.T0CS = 0; // Mode timer
           OPTION_REG.PSA = 0; // On va utiliser un prediviseur
-          // Prediviseur = 256 (PS0=1, PS1=1, PS2=1)
+          // Prediviseur = 256 (PSA = 0, PS0=1, PS1=1, PS2=1)
           OPTION_REG.PS0 = 1;
           OPTION_REG.PS1 = 1;
           OPTION_REG.PS2 = 1;
+          TMR0=0;
        }
         // Surveillance du tapis de course 2 (freq cardiaque)
         if (TREADMILL2_MOTION) {
@@ -208,7 +214,7 @@ void main() {
 
     // Initialisation ADC
     ADC_Init();
-
+    NB_Adherent = 0;
     repos();
 
     while (1) {

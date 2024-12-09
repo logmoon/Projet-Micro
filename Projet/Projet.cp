@@ -33,12 +33,13 @@ sbit TREADMILL3_MOTION at RB6_bit;
 sbit MOTOR at RC6_bit;
 sbit MOTOR_Direction at TRISC6_bit;
 
-unsigned int NB_Adherent = 0;
+unsigned short NB_Adherent = 0;
+char nb_adherent_text[10];
 float heart_rate = 0;
 float treadmill_distance = 0;
 int i = 0;
 int NB = 0;
-#line 92 "C:/000/Esprit/3B/Microcontrollers - S01/Projet/Projet/Projet.c"
+#line 93 "C:/000/Esprit/3B/Microcontrollers - S01/Projet/Projet/Projet.c"
 void repos() {
 
  LED_R = 0;
@@ -60,9 +61,12 @@ void interrupt() {
 
  if (INTF_bit) {
  INTF_bit = 0;
- NB_Adherent++;
+ EEPROM_Write(0x00, NB_Adherent + 1);
+ NB_Adherent = EEPROM_Read(0x00);
+ IntToStr(NB_Adherent, nb_adherent_text);
  LED_AC = 1;
  Lcd_Out(1, 1, "Bienvenue!");
+ Lcd_Out(2, 1, nb_adherent_text);
  Delay_ms(3000);
  LED_AC = 0;
  Lcd_Cmd(_LCD_CLEAR);
@@ -88,11 +92,13 @@ void interrupt() {
 
 
  INTCON.T0IE = 1;
+ OPTION_REG.T0CS = 0;
  OPTION_REG.PSA = 0;
 
  OPTION_REG.PS0 = 1;
  OPTION_REG.PS1 = 1;
  OPTION_REG.PS2 = 1;
+ TMR0=0;
  }
 
  if (TREADMILL2_MOTION) {
@@ -158,10 +164,10 @@ void main() {
 
 
  ADC_Init();
-
+ NB_Adherent = 0;
  repos();
 
  while (1) {
-#line 244 "C:/000/Esprit/3B/Microcontrollers - S01/Projet/Projet/Projet.c"
+#line 250 "C:/000/Esprit/3B/Microcontrollers - S01/Projet/Projet/Projet.c"
  }
 }
